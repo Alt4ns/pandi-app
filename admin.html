@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Pandi Destek — Yönetim</title>
+  <link rel="icon" href="assets/app-icon.png">
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body>
+  <main>
+    <section id="admin-login" class="login-card">
+      <a class="admin-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi Destek</span></a>
+      <span class="kicker">YÖNETİCİ PANELİ</span>
+      <h1>Destek taleplerini<br>tek yerden yönet.</h1>
+      <p>Bu ekran yalnızca doğrulanmış Pandi yönetici hesabına açıktır.</p>
+      <div class="provider-buttons"><button id="admin-google"><span class="google">G</span> Google ile giriş</button><button id="admin-apple" class="apple"><span>●</span> Apple ile giriş</button></div>
+      <div class="divider"><span>veya</span></div>
+      <label>E-posta<input id="admin-email" type="email" autocomplete="email" value="alt4ns@icloud.com"></label>
+      <label>Şifre<input id="admin-password" type="password" autocomplete="current-password" placeholder="Şifren"></label>
+      <button id="admin-email-login" class="primary">Yönetim paneline giriş yap</button>
+      <p id="login-status" class="status" role="status"></p>
+      <a class="back" href="index.html">← Pandi ana sayfasına dön</a>
+    </section>
+
+    <section id="admin-app" class="admin-app" hidden>
+      <aside class="sidebar"><a class="admin-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi</span></a><nav><button class="active">◫ <span>Destek talepleri</span></button></nav><div class="admin-user"><span id="admin-avatar">A</span><div><small>YÖNETİCİ</small><strong id="admin-user-email"></strong></div><button id="admin-logout" title="Çıkış yap">↗</button></div></aside>
+      <div class="workspace">
+        <header><div><span class="kicker">PANDİ DESTEK</span><h1>Destek talepleri</h1><p>Siteden oluşturulan talepleri incele ve durumlarını yönet.</p></div><button id="refresh">↻ Yenile</button></header>
+        <div class="stats"><article><small>TOPLAM</small><strong id="stat-total">0</strong></article><article><small>YENİ</small><strong id="stat-new">0</strong></article><article><small>İNCELENİYOR</small><strong id="stat-progress">0</strong></article><article><small>ÇÖZÜLDÜ</small><strong id="stat-done">0</strong></article></div>
+        <div class="toolbar"><div class="filters"><button class="active" data-filter="all">Tümü</button><button data-filter="new">Yeni</button><button data-filter="in_progress">İnceleniyor</button><button data-filter="resolved">Çözüldü</button></div><input id="ticket-search" type="search" placeholder="Talep, e-posta veya takip no ara…"></div>
+        <div id="ticket-list" class="ticket-list"><div class="empty">Talepler yükleniyor…</div></div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="assets/admin.js"></script>
+</body>
+</html>
