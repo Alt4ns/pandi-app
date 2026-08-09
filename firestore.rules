@@ -1,17 +1,36 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
     function isAdmin() {
-      return request.auth != null
+      return signedIn()
         && request.auth.token.email == 'alt4ns@icloud.com'
         && request.auth.token.email_verified == true;
     }
 
+    function ownsTicket(requestId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/DestekTalepleri/$(requestId)).data.uid == request.auth.uid;
+    }
+
+    function ownsTicketAfter(requestId) {
+      return signedIn()
+        && getAfter(/databases/$(database)/documents/DestekTalepleri/$(requestId)).data.uid == request.auth.uid;
+    }
+
+    function validStatus(value) {
+      return value in ['new', 'in_progress', 'resolved'];
+    }
+
     match /DestekTalepleri/{requestId} {
-      allow create: if request.auth != null
+      allow create: if signedIn()
         && request.resource.data.keys().hasOnly([
           'uid', 'name', 'email', 'category', 'message', 'status',
-          'source', 'createdAt', 'updatedAt'
+          'source', 'createdAt', 'updatedAt', 'lastMessage',
+          'lastMessageAt', 'lastSender'
         ])
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.email == request.auth.token.email
@@ -27,12 +46,63 @@ service cloud.firestore {
         && request.resource.data.message is string
         && request.resource.data.message.size() >= 10
         && request.resource.data.message.size() <= 3000
+        && request.resource.data.lastMessage is string
+        && request.resource.data.lastMessage.size() <= 200
         && request.resource.data.status == 'new'
+        && request.resource.data.lastSender == 'user'
         && request.resource.data.source == 'pandi-web';
-      allow read: if isAdmin() || (request.auth != null && resource.data.uid == request.auth.uid);
+
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+
       allow update: if isAdmin()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt']);
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'updatedAt', 'lastMessage', 'lastMessageAt', 'lastSender'
+        ])
+        && validStatus(request.resource.data.status)
+        || signedIn()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'updatedAt', 'lastMessage', 'lastMessageAt', 'lastSender'
+        ])
+        && request.resource.data.lastSender == 'user'
+        && request.resource.data.lastMessage is string
+        && request.resource.data.lastMessage.size() <= 200
+        && request.resource.data.status in ['new', 'in_progress'];
+
       allow delete: if false;
+
+      match /Mesajlar/{messageId} {
+        allow read: if isAdmin() || ownsTicket(requestId);
+        allow create: if request.resource.data.keys().hasOnly([
+            'senderId', 'senderRole', 'text', 'createdAt'
+          ])
+          && request.resource.data.text is string
+          && request.resource.data.text.size() >= 2
+          && request.resource.data.text.size() <= 3000
+          && (
+            isAdmin()
+            && request.resource.data.senderId == request.auth.uid
+            && request.resource.data.senderRole == 'admin'
+            || ownsTicketAfter(requestId)
+            && request.resource.data.senderId == request.auth.uid
+            && request.resource.data.senderRole == 'user'
+          );
+        allow update, delete: if false;
+      }
+    }
+
+    match /mail/{mailId} {
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly(['ticketId', 'to', 'createdAt', 'message'])
+        && request.resource.data.ticketId is string
+        && request.resource.data.to == get(/databases/$(database)/documents/DestekTalepleri/$(request.resource.data.ticketId)).data.email
+        && request.resource.data.message.keys().hasOnly(['subject', 'text', 'html'])
+        && request.resource.data.message.subject is string
+        && request.resource.data.message.text is string
+        && request.resource.data.message.html is string;
+      allow read: if isAdmin();
+      allow update, delete: if false;
     }
   }
 }

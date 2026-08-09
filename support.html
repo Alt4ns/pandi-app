@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pandi destek merkezinde yeni talep oluştur, geçmiş taleplerini görüntüle ve destek ekibiyle mesajlaş.">
+  <meta name="theme-color" content="#fff9f6">
+  <title>Pandi Destek Merkezi</title>
+  <link rel="icon" href="assets/app-icon.png">
+  <link rel="stylesheet" href="assets/support-center.css">
+</head>
+<body>
+  <header class="support-nav">
+    <a class="support-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi</span></a>
+    <div><a href="index.html">Ana sayfa</a><a href="privacy.html">Gizlilik</a></div>
+  </header>
+
+  <main>
+    <section class="support-hero">
+      <span class="eyebrow">PANDİ DESTEK MERKEZİ</span>
+      <h1>Yanıtların kaybolmasın.<br><em>Konuşman burada kalsın.</em></h1>
+      <p>Yeni talep oluştur, geçmiş konuşmalarını görüntüle ve Pandi destek ekibiyle güvenli biçimde mesajlaş.</p>
+    </section>
+
+    <section id="support-auth" class="login-card">
+      <div class="login-copy"><span class="login-symbol">♙</span><div><small>GÜVENLİ DESTEK HESABI</small><h2>Destek merkezine giriş yap</h2><p>Taleplerini yalnızca sen ve Pandi destek ekibi görebilir.</p></div></div>
+      <div class="social-auth"><button id="google-login" type="button"><img class="auth-logo google-logo" src="assets/google-logo.png" alt="" aria-hidden="true">Google ile devam et</button><button id="apple-login" class="apple-login" type="button"><img class="auth-logo apple-logo" src="assets/apple-logo.svg" alt="" aria-hidden="true">Apple ile devam et</button></div>
+      <div class="divider"><span>veya e-posta ile</span></div>
+      <div class="email-auth"><label>E-posta<input id="auth-email" type="email" autocomplete="email" placeholder="ornek@icloud.com"></label><label>Şifre<input id="auth-password" type="password" autocomplete="current-password" minlength="6" placeholder="En az 6 karakter"></label></div>
+      <div class="auth-actions"><button id="email-login" type="button">Giriş yap</button><button id="email-register" class="secondary" type="button">Yeni hesap oluştur</button></div>
+      <p id="auth-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="support-app" class="support-app" hidden>
+      <aside class="ticket-sidebar">
+        <div class="account-card"><span id="account-avatar">P</span><div><small>DESTEK HESABI</small><strong id="account-name"></strong></div><button id="logout" type="button">Çıkış</button></div>
+        <button id="new-ticket-button" class="new-ticket-button" type="button"><span>Yeni destek talebi</span><i>＋</i></button>
+        <div class="list-heading"><span>Taleplerim</span><small id="ticket-count">0 talep</small></div>
+        <div id="ticket-list" class="ticket-list"><p class="empty-state">Taleplerin yükleniyor…</p></div>
+      </aside>
+
+      <section class="conversation-panel">
+        <div id="conversation-empty" class="conversation-empty"><span>♡</span><h2>Destek konuşmaların burada.</h2><p>Bir talep seç veya yeni bir destek talebi oluştur.</p></div>
+
+        <div id="conversation" class="conversation" hidden>
+          <header class="conversation-header"><div><span id="conversation-code"></span><h2 id="conversation-title"></h2><p id="conversation-meta"></p></div><span id="conversation-status" class="ticket-status"></span></header>
+          <div id="message-list" class="message-list"></div>
+          <form id="reply-form" class="reply-form"><textarea name="message" minlength="2" maxlength="3000" required placeholder="Mesajını yaz…"></textarea><button type="submit">Gönder <span>↑</span></button><p id="reply-status" class="status" role="status" aria-live="polite"></p></form>
+        </div>
+
+        <form id="new-ticket-form" class="new-ticket-form" hidden>
+          <div class="form-heading"><div><span class="eyebrow">YENİ TALEP</span><h2>Nasıl yardımcı olabiliriz?</h2></div><button id="close-new-ticket" type="button" aria-label="Formu kapat">×</button></div>
+          <div class="form-grid"><label>Adın<input name="name" autocomplete="name" maxlength="80" required placeholder="Sana nasıl hitap edelim?"></label><label>Talep konusu<select name="category" required><option value="">Seç</option><option>Uygulama desteği</option><option>Hesap ve Premium</option><option>Gizlilik talebi</option><option>Hata bildirimi</option><option>Beta geri bildirimi</option><option>Diğer</option></select></label></div>
+          <label>Mesajın<textarea name="message" minlength="10" maxlength="3000" required placeholder="Yaşadığın durumu ve kullandığın iPhone modelini mümkün olduğunca ayrıntılı anlat."></textarea></label>
+          <label class="consent"><input name="consent" type="checkbox" required><span>Talebimin yanıtlanması için verdiğim iletişim bilgilerinin işlenmesini kabul ediyorum. <a href="privacy.html">Gizlilik Politikası</a></span></label>
+          <input class="hp-field" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="create-ticket" type="submit"><span>Destek talebi oluştur</span><i>→</i></button>
+          <p id="create-status" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <footer><span>© 2026 Pandi</span><div><a href="privacy.html">Gizlilik</a><a href="terms.html">Kullanım Koşulları</a><a href="mailto:alt4ns@icloud.com">alt4ns@icloud.com</a></div></footer>
+  <script type="module" src="assets/support-center.js"></script>
+</body>
+</html>

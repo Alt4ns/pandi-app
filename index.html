@@ -17,7 +17,7 @@
 <body>
   <header class="nav shell">
     <a class="brand" href="index.html" aria-label="Pandi ana sayfa"><img src="assets/app-icon.png" alt=""><span>Pandi</span></a>
-    <nav aria-label="Ana menü"><a href="#deneyim">Uygulama</a><a href="#ozellikler">Özellikler</a><a href="#iletisim">İletişim</a><a href="privacy.html">Gizlilik</a></nav>
+    <nav aria-label="Ana menü"><a href="#deneyim">Uygulama</a><a href="#ozellikler">Özellikler</a><a href="support.html">Destek</a><a href="privacy.html">Gizlilik</a></nav>
     <a class="nav-cta testflight-nav" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener"><img src="assets/testflight-logo.webp" alt=""> Beta’ya katıl</a>
   </header>
 
@@ -82,28 +82,9 @@
     </section>
 
     <section id="iletisim" class="contact shell">
-      <div class="contact-heading"><span class="eyebrow">PANDİ DESTEK</span><h2>Destek talebi oluştur.</h2><p>Uygulamayla ilgili bir sorun yaşıyorsan aşağıdaki formu doldur. Talebin bir takip numarasıyla kaydedilir ve destek panelimizden incelenir.</p></div>
+      <div class="contact-heading"><span class="eyebrow">PANDİ DESTEK</span><h2>Yardım istediğinde<br>yanındayız.</h2><p>Destek merkezinde yeni talep oluşturabilir, geçmiş taleplerini görebilir ve ekibimizle aynı konuşma üzerinden yazışabilirsin.</p></div>
       <div class="support-layout">
-        <div class="support-box">
-          <div id="support-auth" class="support-auth">
-            <div class="auth-intro"><span class="contact-symbol">♙</span><div><small>GÜVENLİ DESTEK HESABI</small><h3>Talep oluşturmak için giriş yap</h3><p>Talebini takip edebilmek ve sana güvenli biçimde yanıt verebilmek için bir hesapla devam et.</p></div></div>
-            <div class="social-auth"><button id="google-login" type="button"><img class="auth-logo google-logo" src="assets/google-logo.png" alt="" aria-hidden="true">Google ile devam et</button><button id="apple-login" class="apple-login" type="button"><img class="auth-logo apple-logo" src="assets/apple-logo.svg" alt="" aria-hidden="true">Apple ile devam et</button></div>
-            <div class="auth-divider"><span>veya e-posta ile</span></div>
-            <div class="email-auth"><label>E-posta<input id="auth-email" type="email" autocomplete="email" placeholder="ornek@icloud.com"></label><label>Şifre<input id="auth-password" type="password" autocomplete="current-password" minlength="6" placeholder="En az 6 karakter"></label></div>
-            <div class="auth-actions"><button id="email-login" type="button">Giriş yap</button><button id="email-register" class="secondary" type="button">Yeni hesap oluştur</button></div>
-            <p id="auth-status" class="support-status" role="status" aria-live="polite"></p>
-          </div>
-          <div id="account-bar" class="account-bar" hidden><div><span id="account-avatar">P</span><p><small>DESTEK HESABI</small><strong id="account-name"></strong></p></div><button id="logout" type="button">Çıkış yap</button></div>
-          <form id="support-form" class="support-form" hidden>
-          <label>Adın<input name="name" autocomplete="name" maxlength="80" required placeholder="Sana nasıl hitap edelim?"></label>
-          <label>Talep konusu<select name="category" required><option value="">Seç</option><option>Uygulama desteği</option><option>Hesap ve Premium</option><option>Gizlilik talebi</option><option>Hata bildirimi</option><option>Beta geri bildirimi</option><option>Diğer</option></select></label>
-          <label>Mesajın<textarea name="message" minlength="10" maxlength="3000" required placeholder="Yaşadığın durumu ve kullandığın iPhone modelini mümkün olduğunca ayrıntılı anlat."></textarea></label>
-          <label class="consent"><input name="consent" type="checkbox" required><span>Talebimin yanıtlanması için verdiğim iletişim bilgilerinin işlenmesini kabul ediyorum. <a href="privacy.html">Gizlilik Politikası</a></span></label>
-          <input class="hp-field" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <button class="support-submit" type="submit"><span>Destek talebi oluştur</span><i>→</i></button>
-          <p id="support-status" class="support-status" role="status" aria-live="polite"></p>
-          </form>
-        </div>
+        <div class="support-launch"><span class="contact-symbol">♙</span><small>GÜVENLİ DESTEK MERKEZİ</small><h3>Taleplerin ve yanıtların tek yerde.</h3><p>Apple, Google veya e-posta hesabınla giriş yap. Yeni bir talep oluştur, önceki konuşmalarını görüntüle ve destek ekibimize doğrudan yanıt ver.</p><ul><li>Geçmiş taleplerini görüntüle</li><li>Destek ekibiyle karşılıklı mesajlaş</li><li>Yanıt geldiğinde e-posta bildirimi al</li></ul><a class="support-center-link" href="support.html"><span>Destek merkezini aç</span><i>→</i></a></div>
         <aside class="mail-card"><span class="contact-symbol">✉</span><small>DOĞRUDAN E-POSTA</small><h3>Form kullanmak istemiyor musun?</h3><p>Genel soruların için bize e-posta gönderebilirsin. Destek formundaki talepler takip numarasıyla daha kolay izlenir.</p><a href="mailto:alt4ns@icloud.com">alt4ns@icloud.com <span>↗</span></a></aside>
       </div>
     </section>
@@ -114,7 +95,6 @@
     </section>
   </main>
 
-  <footer class="footer shell"><div class="brand"><img src="assets/app-icon.png" alt=""><span>Pandi</span></div><p>Döngünü anlamanın daha sıcak yolu.</p><div class="footer-links"><a href="privacy.html">Gizlilik</a><a href="terms.html">Kullanım Koşulları</a><a href="#iletisim">Destek</a><a href="mailto:alt4ns@icloud.com">E-posta</a><a href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener">TestFlight ↗</a></div><small>© 2026 Pandi. Tüm hakları saklıdır. <a class="admin-link" href="admin.html">Yönetim</a></small></footer>
-  <script type="module" src="assets/support.js"></script>
+  <footer class="footer shell"><div class="brand"><img src="assets/app-icon.png" alt=""><span>Pandi</span></div><p>Döngünü anlamanın daha sıcak yolu.</p><div class="footer-links"><a href="privacy.html">Gizlilik</a><a href="terms.html">Kullanım Koşulları</a><a href="support.html">Destek</a><a href="mailto:alt4ns@icloud.com">E-posta</a><a href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener">TestFlight ↗</a></div><small>© 2026 Pandi. Tüm hakları saklıdır. <a class="admin-link" href="admin.html">Yönetim</a></small></footer>
 </body>
 </html>
