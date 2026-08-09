@@ -1,5 +1,6 @@
-.screen-card img { object-fit: contain; background: transparent; }
-.shot img { object-fit: contain; background: linear-gradient(145deg, #fff4ed, #f6e6df); }
+.screen-card { overflow: visible; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+.screen-card img { object-fit: contain; background: transparent; filter: drop-shadow(0 26px 34px rgba(44,18,37,.14)); }
+.shot img { object-fit: contain; background: transparent; border-radius: 0; box-shadow: none; }
 .shot-wide img { object-fit: contain; }
 .story-media-transparent img { object-fit: contain; border-radius: 0; box-shadow: none; }
 .community-gallery img { object-fit: contain; border-radius: 0; box-shadow: none; }
