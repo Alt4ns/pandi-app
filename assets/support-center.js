@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, OAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import { collection, doc, getFirestore, onSnapshot, query, serverTimestamp, where, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 
@@ -48,10 +48,6 @@ async function runAuth(action) {
 document.querySelector("#google-login").addEventListener("click", () => runAuth(() => signInWithPopup(auth, new GoogleAuthProvider())));
 document.querySelector("#apple-login").addEventListener("click", () => runAuth(() => signInWithPopup(auth, new OAuthProvider("apple.com"))));
 document.querySelector("#email-login").addEventListener("click", () => runAuth(() => signInWithEmailAndPassword(auth, document.querySelector("#auth-email").value.trim(), document.querySelector("#auth-password").value)));
-document.querySelector("#email-register").addEventListener("click", () => runAuth(async () => {
-  const result = await createUserWithEmailAndPassword(auth, document.querySelector("#auth-email").value.trim(), document.querySelector("#auth-password").value);
-  await updateProfile(result.user, { displayName: result.user.email.split("@")[0] });
-}));
 document.querySelector("#logout").addEventListener("click", () => signOut(auth));
 
 onAuthStateChanged(auth, (user) => {
