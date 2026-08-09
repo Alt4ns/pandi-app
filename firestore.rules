@@ -28,7 +28,7 @@ service cloud.firestore {
     match /DestekTalepleri/{requestId} {
       allow create: if signedIn()
         && request.resource.data.keys().hasOnly([
-          'uid', 'name', 'email', 'category', 'message', 'status',
+          'uid', 'name', 'email', 'authProvider', 'category', 'message', 'status',
           'source', 'createdAt', 'updatedAt', 'lastMessage',
           'lastMessageAt', 'lastSender'
         ])
@@ -40,6 +40,9 @@ service cloud.firestore {
         && request.resource.data.email is string
         && request.resource.data.email.size() >= 5
         && request.resource.data.email.size() <= 160
+        && request.resource.data.authProvider is string
+        && request.resource.data.authProvider.size() >= 3
+        && request.resource.data.authProvider.size() <= 100
         && request.resource.data.category is string
         && request.resource.data.category.size() >= 2
         && request.resource.data.category.size() <= 60

@@ -143,7 +143,8 @@ newTicketForm.addEventListener("submit", async (event) => {
     const ticketRef = doc(collection(db, "DestekTalepleri"));
     const messageRef = doc(collection(ticketRef, "Mesajlar"));
     const batch = writeBatch(db);
-    batch.set(ticketRef, { uid: currentUser.uid, name: data.get("name").trim(), email: currentUser.email, category: data.get("category"), message: text, status: "new", source: "pandi-web", createdAt: serverTimestamp(), updatedAt: serverTimestamp(), lastMessage: text.slice(0, 200), lastMessageAt: serverTimestamp(), lastSender: "user" });
+    const authProvider = currentUser.providerData.map(provider => provider.providerId).filter(Boolean).join(",") || "password";
+    batch.set(ticketRef, { uid: currentUser.uid, name: data.get("name").trim(), email: currentUser.email, authProvider, category: data.get("category"), message: text, status: "new", source: "pandi-web", createdAt: serverTimestamp(), updatedAt: serverTimestamp(), lastMessage: text.slice(0, 200), lastMessageAt: serverTimestamp(), lastSender: "user" });
     batch.set(messageRef, { senderId: currentUser.uid, senderRole: "user", text, createdAt: serverTimestamp() });
     await batch.commit();
     status.className = "status success";

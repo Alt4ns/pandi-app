@@ -61,7 +61,7 @@ function render() {
   document.querySelector("#stat-progress").textContent = tickets.filter(x => x.status === "in_progress").length;
   document.querySelector("#stat-done").textContent = tickets.filter(x => x.status === "resolved").length;
   const term = document.querySelector("#ticket-search").value.trim().toLowerCase();
-  const shown = tickets.filter(x => (activeFilter === "all" || x.status === activeFilter) && `${x.id} ${x.name} ${x.email} ${x.category} ${x.message} ${x.lastMessage || ""}`.toLowerCase().includes(term));
+  const shown = tickets.filter(x => (activeFilter === "all" || x.status === activeFilter) && `${x.id} ${x.uid || ""} ${x.name} ${x.email} ${x.category} ${x.message} ${x.lastMessage || ""}`.toLowerCase().includes(term));
   if (!shown.length) { list.innerHTML = '<div class="empty">Bu görünümde destek talebi bulunmuyor.</div>'; return; }
   list.innerHTML = shown.map(ticket => `<article class="ticket ${ticket.id === activeTicketId ? "active" : ""}" data-id="${ticket.id}"><div class="ticket-code"><strong>${codeFor(ticket.id)}</strong><span class="badge ${ticket.status}">${statusLabel(ticket.status)}</span><small>${formatDate(ticket.updatedAt || ticket.createdAt)}</small></div><div class="ticket-main"><small>${escapeHtml(ticket.category)}</small><strong>${escapeHtml(ticket.name)} · ${escapeHtml(ticket.email)}</strong><p>${escapeHtml(ticket.lastMessage || ticket.message)}</p></div></article>`).join("");
   list.querySelectorAll("[data-id]").forEach(card => card.addEventListener("click", () => openTicket(card.dataset.id)));
@@ -94,8 +94,14 @@ function normalizeMessage(message) {
 function renderDetailHeader() {
   const ticket = tickets.find(item => item.id === activeTicketId);
   if (!ticket) return;
-  detail.innerHTML = `<header class="detail-header"><div><small>${codeFor(ticket.id)}</small><h2>${escapeHtml(ticket.category)}</h2><p>${escapeHtml(ticket.name)} · ${escapeHtml(ticket.email)}</p></div><select id="detail-status"><option value="new" ${ticket.status === "new" ? "selected" : ""}>Yeni</option><option value="in_progress" ${ticket.status === "in_progress" ? "selected" : ""}>İnceleniyor</option><option value="resolved" ${ticket.status === "resolved" ? "selected" : ""}>Çözüldü</option></select></header><div id="admin-messages" class="admin-messages"></div><form id="admin-reply" class="admin-reply"><textarea name="message" minlength="2" maxlength="3000" required placeholder="Kullanıcıya yanıt yaz…"></textarea><button type="submit">Yanıtla ↑</button><small class="email-note">Yanıt konuşmaya eklenir ve e-posta bildirim kuyruğuna gönderilir.</small><p id="admin-reply-status" class="status" role="status"></p></form>`;
+  const provider = ({ "google.com": "Google", "apple.com": "Apple", password: "E-posta ve şifre" }[ticket.authProvider]) || ticket.authProvider || "Eski kayıt";
+  detail.innerHTML = `<header class="detail-header"><div><small>${codeFor(ticket.id)}</small><h2>${escapeHtml(ticket.category)}</h2><p>${escapeHtml(ticket.name)} · ${escapeHtml(ticket.email)}</p></div><select id="detail-status"><option value="new" ${ticket.status === "new" ? "selected" : ""}>Yeni</option><option value="in_progress" ${ticket.status === "in_progress" ? "selected" : ""}>İnceleniyor</option><option value="resolved" ${ticket.status === "resolved" ? "selected" : ""}>Çözüldü</option></select></header><section class="detail-meta"><div><small>KULLANICI UID</small><strong>${escapeHtml(ticket.uid || "Bilinmiyor")}</strong></div><button id="copy-uid" type="button" ${ticket.uid ? "" : "disabled"}>UID’yi kopyala</button><div><small>GİRİŞ YÖNTEMİ</small><strong>${escapeHtml(provider)}</strong></div><div><small>KAYNAK</small><strong>${escapeHtml(ticket.source || "pandi-web")}</strong></div><div><small>OLUŞTURULMA</small><strong>${formatDate(ticket.createdAt)}</strong></div><div><small>SON GÜNCELLEME</small><strong>${formatDate(ticket.updatedAt || ticket.createdAt)}</strong></div></section><div id="admin-messages" class="admin-messages"></div><form id="admin-reply" class="admin-reply"><textarea name="message" minlength="2" maxlength="3000" required placeholder="Kullanıcıya yanıt yaz…"></textarea><button type="submit">Yanıtla ↑</button><small class="email-note">Yanıt konuşmaya eklenir ve e-posta bildirim kuyruğuna gönderilir.</small><p id="admin-reply-status" class="status" role="status"></p></form>`;
   detail.querySelector("#detail-status").addEventListener("change", changeStatus);
+  detail.querySelector("#copy-uid")?.addEventListener("click", async (event) => {
+    await navigator.clipboard.writeText(ticket.uid);
+    event.currentTarget.textContent = "Kopyalandı ✓";
+    setTimeout(() => { event.currentTarget.textContent = "UID’yi kopyala"; }, 1800);
+  });
   detail.querySelector("#admin-reply").addEventListener("submit", sendReply);
 }
 
