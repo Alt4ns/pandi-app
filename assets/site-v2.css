@@ -16,7 +16,7 @@
 .sharing-copy li { position: relative; padding-left: 27px; color: rgba(255,255,255,.82); }
 .sharing-copy li::before { content: "✓"; position: absolute; left: 0; color: #ff6846; font-weight: 800; }
 
-.support-layout { display: grid; grid-template-columns: 1.35fr .65fr; gap: 22px; align-items: start; }
+.support-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 22px; align-items: start; }
 .support-box, .mail-card { background: rgba(255,255,255,.82); border: 1px solid rgba(73,42,32,.1); border-radius: 30px; box-shadow: 0 20px 60px rgba(83,48,34,.08); overflow: hidden; }
 .support-form, .support-auth { padding: 34px; }
 .support-form { display: grid; gap: 18px; }
@@ -41,8 +41,11 @@
 .auth-intro p { margin: 0; color: var(--muted); line-height: 1.55; }
 .social-auth { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .social-auth button, .auth-actions button { min-height: 50px; border: 1px solid rgba(73,42,32,.15); border-radius: 14px; background: #fff; color: var(--ink); font: inherit; font-weight: 750; cursor: pointer; }
+.social-auth button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
 .social-auth .apple-login { color: #fff; background: #080808; border-color: #080808; }
-.google-mark { margin-right: 8px; color: #4285f4; font-weight: 900; }
+.auth-logo { display: block; flex: 0 0 auto; object-fit: contain; }
+.google-logo { width: 44px; height: 22px; margin: 0 -11px; clip-path: inset(0 25%); }
+.apple-logo { width: 18px; height: 22px; filter: invert(1); }
 .auth-divider { margin: 22px 0; display: flex; align-items: center; color: var(--muted); font-size: 11px; }
 .auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: rgba(73,42,32,.12); }
 .auth-divider span { padding: 0 12px; }
@@ -59,11 +62,12 @@
 .account-bar small { color: rgba(255,255,255,.5); font-size: 9px; letter-spacing: .1em; }
 #account-avatar { width: 35px; height: 35px; display: grid; place-items: center; background: #ed5638; border-radius: 50%; font-weight: 850; }
 .account-bar button { padding: 8px 12px; color: #fff; background: rgba(255,255,255,.1); border: 0; border-radius: 10px; cursor: pointer; }
-.mail-card { position: sticky; top: 20px; }
+.mail-card { position: sticky; top: 20px; min-width: 0; padding: 30px; }
 .mail-card small { display: block; margin: 26px 0 8px; color: #087aff; font-weight: 850; letter-spacing: .11em; }
 .mail-card h3 { margin: 0 0 12px; font-size: 25px; line-height: 1.15; }
 .mail-card p { color: var(--muted); line-height: 1.65; }
-.mail-card > a { margin-top: 20px; padding-top: 18px; display: flex; justify-content: space-between; color: #087aff; border-top: 1px solid rgba(73,42,32,.12); font-weight: 800; }
+.mail-card > a { width: 100%; min-width: 0; margin-top: 20px; padding-top: 18px; display: flex; gap: 12px; justify-content: space-between; color: #087aff; border-top: 1px solid rgba(73,42,32,.12); font-weight: 800; overflow-wrap: anywhere; word-break: break-word; }
+.mail-card > a span { flex: 0 0 auto; }
 .admin-link { color: inherit; opacity: .48; }
 
 @media (max-width: 900px) {
