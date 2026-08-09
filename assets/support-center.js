@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, OAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { collection, doc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, updateDoc, where, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { collection, doc, getFirestore, onSnapshot, query, serverTimestamp, where, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const app = initializeApp(firebaseConfig);
@@ -106,10 +106,19 @@ function selectTicket(id) {
   badge.className = `ticket-status ${ticket.status}`;
   badge.textContent = statusLabel(ticket.status);
   messageList.innerHTML = '<p class="empty-state">Konuşma yükleniyor…</p>';
-  stopMessages = onSnapshot(query(collection(db, "DestekTalepleri", id, "Mesajlar"), orderBy("createdAt", "asc")), (snapshot) => {
-    const messages = snapshot.docs.map(item => item.data());
-    renderMessages(messages.length ? messages : [{ senderRole: "user", text: ticket.message, createdAt: ticket.createdAt }]);
+  stopMessages = onSnapshot(collection(db, "DestekTalepleri", id, "Mesajlar"), (snapshot) => {
+    const messages = snapshot.docs.map(item => normalizeMessage(item.data())).filter(item => item.text);
+    if (!messages.some(item => item.senderRole === "user" && item.text === ticket.message)) messages.push(normalizeMessage({ senderRole: "user", text: ticket.message, createdAt: ticket.createdAt }));
+    renderMessages(messages.sort((a, b) => toDate(a.createdAt) - toDate(b.createdAt)));
   }, (error) => { console.error(error); messageList.innerHTML = '<p class="empty-state">Mesajlar yüklenemedi.</p>'; });
+}
+
+function normalizeMessage(message) {
+  return {
+    senderRole: message.senderRole || message.role || (message.isAdmin ? "admin" : "user"),
+    text: message.text || message.message || message.content || "",
+    createdAt: message.createdAt || message.timestamp || message.sentAt || null
+  };
 }
 
 function renderMessages(messages) {

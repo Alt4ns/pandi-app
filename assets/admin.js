@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { collection, doc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { collection, doc, getFirestore, onSnapshot, orderBy, query, serverTimestamp, setDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { adminEmail, firebaseConfig } from "./firebase-config.js";
 
 const app = initializeApp(firebaseConfig);
@@ -76,10 +76,19 @@ function openTicket(id) {
   const ticket = tickets.find(item => item.id === id);
   const messages = detail.querySelector("#admin-messages");
   messages.innerHTML = '<div class="empty">Konuşma yükleniyor…</div>';
-  stopMessages = onSnapshot(query(collection(db, "DestekTalepleri", id, "Mesajlar"), orderBy("createdAt", "asc")), (snapshot) => {
-    const items = snapshot.docs.map(item => item.data());
-    renderMessages(items.length ? items : [{ senderRole: "user", text: ticket.message, createdAt: ticket.createdAt }]);
+  stopMessages = onSnapshot(collection(db, "DestekTalepleri", id, "Mesajlar"), (snapshot) => {
+    const items = snapshot.docs.map(item => normalizeMessage(item.data())).filter(item => item.text);
+    if (!items.some(item => item.senderRole === "user" && item.text === ticket.message)) items.push(normalizeMessage({ senderRole: "user", text: ticket.message, createdAt: ticket.createdAt }));
+    renderMessages(items.sort((a, b) => toDate(a.createdAt) - toDate(b.createdAt)));
   }, (error) => { console.error(error); messages.innerHTML = '<div class="empty">Mesajlar yüklenemedi.</div>'; });
+}
+
+function normalizeMessage(message) {
+  return {
+    senderRole: message.senderRole || message.role || (message.isAdmin ? "admin" : "user"),
+    text: message.text || message.message || message.content || "",
+    createdAt: message.createdAt || message.timestamp || message.sentAt || null
+  };
 }
 
 function renderDetailHeader() {
@@ -127,11 +136,15 @@ async function sendReply(event) {
     const batch = writeBatch(db);
     batch.set(messageRef, { senderId: auth.currentUser.uid, senderRole: "admin", text, createdAt: serverTimestamp() });
     batch.update(ticketRef, { status: "in_progress", updatedAt: serverTimestamp(), lastMessage: text.slice(0, 200), lastMessageAt: serverTimestamp(), lastSender: "admin" });
-    batch.set(mailRef, { ticketId: ticket.id, to: ticket.email, createdAt: serverTimestamp(), message: { subject, text: `Merhaba ${ticket.name},\n\nPandi Destek yanıtladı:\n\n${text}\n\nTalebini görüntüle: https://alt4ns.github.io/pandi-app/support.html`, html: `<p>Merhaba ${escapeHtml(ticket.name)},</p><p><strong>Pandi Destek yanıtladı:</strong></p><p>${escapeHtml(text).replace(/\n/g, "<br>")}</p><p><a href="https://alt4ns.github.io/pandi-app/support.html">Destek talebini görüntüle</a></p>` } });
     await batch.commit();
+    let mailQueued = false;
+    try {
+      await setDoc(mailRef, { ticketId: ticket.id, to: ticket.email, createdAt: serverTimestamp(), message: { subject, text: `Merhaba ${ticket.name},\n\nPandi Destek yanıtladı:\n\n${text}\n\nTalebini görüntüle: https://alt4ns.github.io/pandi-app/support.html`, html: `<p>Merhaba ${escapeHtml(ticket.name)},</p><p><strong>Pandi Destek yanıtladı:</strong></p><p>${escapeHtml(text).replace(/\n/g, "<br>")}</p><p><a href="https://alt4ns.github.io/pandi-app/support.html">Destek talebini görüntüle</a></p>` } });
+      mailQueued = true;
+    } catch (mailError) { console.warn("E-posta kuyruğu oluşturulamadı", mailError); }
     form.reset();
     status.style.color = "#177a53";
-    status.textContent = "Yanıt kaydedildi ve e-posta kuyruğuna eklendi.";
+    status.textContent = mailQueued ? "Yanıt kaydedildi ve e-posta kuyruğuna eklendi." : "Yanıt kaydedildi. E-posta bildirimi şu anda gönderilemedi.";
     setTimeout(() => { status.textContent = ""; }, 3500);
   } catch (error) { console.error(error); status.style.color = "#b62f24"; status.textContent = "Yanıt kaydedilemedi. Kuralları ve e-posta yapılandırmasını kontrol et."; }
   finally { button.disabled = false; }

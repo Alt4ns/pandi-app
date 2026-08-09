@@ -62,12 +62,14 @@
 .account-bar small { color: rgba(255,255,255,.5); font-size: 9px; letter-spacing: .1em; }
 #account-avatar { width: 35px; height: 35px; display: grid; place-items: center; background: #ed5638; border-radius: 50%; font-weight: 850; }
 .account-bar button { padding: 8px 12px; color: #fff; background: rgba(255,255,255,.1); border: 0; border-radius: 10px; cursor: pointer; }
-.mail-card { position: sticky; top: 20px; min-width: 0; padding: 30px; }
+.mail-card { position: sticky; top: 20px; min-width: 0; padding: 0; }
+.mail-card-body { padding: 30px 30px 24px; }
 .mail-card small { display: block; margin: 26px 0 8px; color: #087aff; font-weight: 850; letter-spacing: .11em; }
 .mail-card h3 { margin: 0 0 12px; font-size: 25px; line-height: 1.15; }
 .mail-card p { color: var(--muted); line-height: 1.65; }
-.mail-card > a { width: 100%; min-width: 0; margin-top: 20px; padding-top: 18px; display: flex; gap: 12px; justify-content: space-between; color: #087aff; border-top: 1px solid rgba(73,42,32,.12); font-weight: 800; overflow-wrap: anywhere; word-break: break-word; }
-.mail-card > a span { flex: 0 0 auto; }
+.mail-card-link { width: 100%; min-width: 0; padding: 19px 30px 21px; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 14px; color: #087aff; border-top: 1px solid rgba(73,42,32,.12); font-size: clamp(14px,1.35vw,17px); font-weight: 800; text-decoration: none; }
+.mail-address { min-width: 0; overflow-wrap: anywhere; }
+.mail-arrow { flex: 0 0 auto; font-size: 18px; }
 .support-launch { min-width: 0; padding: 38px; background: linear-gradient(145deg,#21151d,#3a1c2e); color: #fff; border-radius: 30px; box-shadow: 0 24px 65px rgba(55,27,42,.18); }
 .support-launch small { display: block; margin: 24px 0 8px; color: #ff795c; font-size: 10px; font-weight: 850; letter-spacing: .11em; }
 .support-launch h3 { margin: 0 0 12px; font-size: 30px; line-height: 1.15; }
@@ -92,6 +94,8 @@
   .sharing-visual img:last-child { height: 340px; right: -18%; }
   .form-row { grid-template-columns: 1fr; }
   .support-box, .mail-card { border-radius: 23px; }
-  .support-form, .support-auth, .mail-card, .support-launch { padding: 24px 20px; }
+  .support-form, .support-auth, .support-launch { padding: 24px 20px; }
+  .mail-card-body { padding: 24px 20px 20px; }
+  .mail-card-link { padding: 17px 20px 19px; }
   .social-auth, .email-auth, .auth-actions { grid-template-columns: 1fr; }
 }
