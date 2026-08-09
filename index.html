@@ -11,12 +11,13 @@
   <title>Pandi — Döngün, senin ritmin</title>
   <link rel="icon" href="assets/app-icon.png">
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/testflight.css">
 </head>
 <body>
   <header class="nav shell">
     <a class="brand" href="index.html" aria-label="Pandi ana sayfa"><img src="assets/app-icon.png" alt=""><span>Pandi</span></a>
-    <nav aria-label="Ana menü"><a href="#deneyim">Uygulama</a><a href="#ozellikler">Özellikler</a><a href="privacy.html">Gizlilik</a></nav>
-    <a class="nav-cta" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener">TestFlight’ta dene <span>↗</span></a>
+    <nav aria-label="Ana menü"><a href="#deneyim">Uygulama</a><a href="#ozellikler">Özellikler</a><a href="#iletisim">İletişim</a><a href="privacy.html">Gizlilik</a></nav>
+    <a class="nav-cta testflight-nav" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener"><img src="assets/testflight-icon.svg" alt=""> Beta’ya katıl</a>
   </header>
 
   <main>
@@ -26,7 +27,7 @@
         <h1>Döngünü değil,<br><em>kendini keşfet.</em></h1>
         <p>Pandi; adet döngünü, belirtilerini ve hislerini tek bir güvenli alanda takip etmene yardımcı olan kişisel döngü arkadaşın.</p>
         <div class="hero-actions">
-          <a class="store-button" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener"><span class="apple">●</span><span><small>ÜCRETSİZ BETA</small><strong>TestFlight’tan İndir</strong></span></a>
+          <a class="store-button testflight-button" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener"><img class="testflight-icon" src="assets/testflight-icon.svg" alt=""><span><small>APPLE TESTFLIGHT</small><strong>Beta Sürümüne Katıl</strong></span><span class="button-arrow">↗</span></a>
           <a class="watch-link" href="#deneyim"><span>▶</span> Uygulamayı keşfet</a>
         </div>
         <div class="hero-proof"><span><b>01</b> Gizlilik odaklı</span><span><b>02</b> Yargısız topluluk</span><span><b>03</b> Kişisel içgörüler</span></div>
@@ -74,9 +75,19 @@
       <div class="shield">⌾</div><div><span class="eyebrow">MAHREMİYET TASARIMIN PARÇASI</span><h2>En kişisel verin,<br>en güçlü özeni hak eder.</h2><p>Verilerin reklam amacıyla satılmaz. HealthKit erişimi yalnızca açık izninle ve izin verdiğin kapsamda kullanılır.</p></div><div class="privacy-links"><a href="privacy.html">Gizlilik Politikası <span>↗</span></a><a href="terms.html">Kullanım Koşulları <span>↗</span></a></div>
     </section>
 
+    <section id="iletisim" class="contact shell">
+      <div class="contact-heading"><span class="eyebrow">BİZE ULAŞ</span><h2>Pandi ile ilgili<br>aklında ne varsa.</h2><p>Destek taleplerini, gizlilik sorularını ve beta deneyimindeki önerilerini doğrudan bizimle paylaşabilirsin.</p></div>
+      <div class="contact-cards">
+        <a class="contact-card" href="mailto:alt4ns@icloud.com?subject=Pandi%20Destek%20Talebi"><span class="contact-symbol">?</span><div><small>UYGULAMA DESTEĞİ</small><strong>Yardım iste</strong><p>Kullanım ve hesap konularında bize yaz.</p></div><i>↗</i></a>
+        <a class="contact-card" href="mailto:alt4ns@icloud.com?subject=Pandi%20Gizlilik%20Talebi"><span class="contact-symbol">⌾</span><div><small>GİZLİLİK</small><strong>Gizlilik talebi gönder</strong><p>Verilerin ve izinlerin hakkında bize ulaş.</p></div><i>↗</i></a>
+        <a class="contact-card" href="mailto:alt4ns@icloud.com?subject=Pandi%20Beta%20Geri%20Bildirimi"><span class="contact-symbol">✦</span><div><small>BETA GERİ BİLDİRİMİ</small><strong>Deneyimini paylaş</strong><p>Önerilerini ve karşılaştığın sorunları ilet.</p></div><i>↗</i></a>
+      </div>
+      <div class="contact-email"><span>Doğrudan e-posta</span><a href="mailto:alt4ns@icloud.com">alt4ns@icloud.com</a></div>
+    </section>
+
     <section class="download shell">
       <div class="download-art"><div class="rings"></div><img src="assets/pandi-wave.png" alt="Kırmızı panda Pandi"></div>
-      <div class="download-copy"><span class="eyebrow">BETA’YA KATIL</span><h2>Pandi’yi bugün<br>denemeye başla.</h2><p>TestFlight üzerinden ücretsiz beta sürümünü indir, deneyimini paylaş ve Pandi’yi birlikte büyütmemize yardımcı ol.</p><a class="store-button light-store" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener"><span class="apple">●</span><span><small>APPLE TESTFLIGHT</small><strong>Beta Sürümünü İndir</strong></span></a><small class="device-note">iPhone ve Apple TestFlight uygulaması gerektirir.</small></div>
+      <div class="download-copy"><span class="eyebrow">BETA’YA KATIL</span><h2>Pandi’yi bugün<br>denemeye başla.</h2><p>TestFlight üzerinden ücretsiz beta sürümünü indir, deneyimini paylaş ve Pandi’yi birlikte büyütmemize yardımcı ol.</p><a class="store-button testflight-button testflight-button-light" href="https://testflight.apple.com/join/GY6GRxYy" target="_blank" rel="noopener"><img class="testflight-icon" src="assets/testflight-icon.svg" alt=""><span><small>APPLE TESTFLIGHT</small><strong>Pandi Beta’yı İndir</strong></span><span class="button-arrow">↗</span></a><small class="device-note">iPhone ve Apple TestFlight uygulaması gerektirir.</small></div>
     </section>
   </main>
 
