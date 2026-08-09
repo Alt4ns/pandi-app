@@ -20,6 +20,7 @@ const authMessage = (error) => {
   if (code.includes("email-already-in-use")) return "Bu e-posta ile zaten bir hesap var. Giriş yapmayı dene.";
   if (code.includes("invalid-credential")) return "E-posta veya şifre hatalı.";
   if (code.includes("weak-password")) return "Şifren en az 6 karakter olmalı.";
+  if (code.includes("unauthorized-domain")) return "Bu web adresi henüz güvenli giriş alanı olarak etkinleştirilmedi.";
   if (code.includes("operation-not-allowed")) return "Bu giriş yöntemi henüz Firebase Console’da etkinleştirilmemiş.";
   return "Giriş tamamlanamadı. Lütfen tekrar dene.";
 };
