@@ -11,6 +11,7 @@ const supportApp = document.querySelector("#support-app");
 const authStatus = document.querySelector("#auth-status");
 const ticketList = document.querySelector("#ticket-list");
 const newTicketForm = document.querySelector("#new-ticket-form");
+const conversationPanel = document.querySelector(".conversation-panel");
 const conversation = document.querySelector("#conversation");
 const conversationEmpty = document.querySelector("#conversation-empty");
 const messageList = document.querySelector("#message-list");
@@ -107,6 +108,13 @@ function selectTicket(id) {
     if (!messages.some(item => item.senderRole === "user" && item.text === ticket.message)) messages.push(normalizeMessage({ senderRole: "user", text: ticket.message, createdAt: ticket.createdAt }));
     renderMessages(messages.sort((a, b) => toDate(a.createdAt) - toDate(b.createdAt)));
   }, (error) => { console.error(error); messageList.innerHTML = '<p class="empty-state">Mesajlar yüklenemedi.</p>'; });
+  scrollConversationIntoView();
+}
+
+function scrollConversationIntoView() {
+  if (window.matchMedia("(max-width: 820px)").matches) {
+    requestAnimationFrame(() => conversationPanel.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
 }
 
 function normalizeMessage(message) {
@@ -122,7 +130,7 @@ function renderMessages(messages) {
   messageList.scrollTop = messageList.scrollHeight;
 }
 
-document.querySelector("#new-ticket-button").addEventListener("click", () => { conversation.hidden = true; conversationEmpty.hidden = true; newTicketForm.hidden = false; });
+document.querySelector("#new-ticket-button").addEventListener("click", () => { conversation.hidden = true; conversationEmpty.hidden = true; newTicketForm.hidden = false; scrollConversationIntoView(); });
 document.querySelector("#close-new-ticket").addEventListener("click", () => { newTicketForm.hidden = true; if (activeTicketId) conversation.hidden = false; else conversationEmpty.hidden = false; });
 
 newTicketForm.addEventListener("submit", async (event) => {

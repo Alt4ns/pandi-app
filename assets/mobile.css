@@ -1,0 +1,86 @@
+@media (max-width: 720px) {
+  html { scroll-padding-top: 76px; }
+  body { font-size: 15px; }
+  .shell { width: min(100% - 28px, 560px); }
+  .nav { height: 74px; gap: 12px; }
+  .brand { gap: 9px; font-size: 19px; }
+  .brand img { width: 38px; height: 38px; border-radius: 12px; }
+  .nav-cta { min-height: 42px; padding: 9px 12px; white-space: nowrap; }
+  .testflight-nav img { width: 24px; height: 24px; }
+
+  .hero { gap: 8px; padding-top: 32px; padding-bottom: 70px; }
+  .hero h1 { margin: 20px 0; font-size: clamp(44px, 13vw, 60px); line-height: .98; letter-spacing: -3px; }
+  .hero-copy > p { font-size: 16px; line-height: 1.65; }
+  .hero-actions { gap: 14px; }
+  .hero-visual { height: 470px; margin-top: 12px; }
+  .screen-main { width: 218px; height: 470px; right: 50%; transform: translateX(40%); }
+  .screen-back { width: 170px; height: 370px; right: -34px; top: 58px; }
+  .hero-pandi { width: 130px; left: -8px; bottom: 8px; }
+  .float-card { max-width: 180px; }
+  .float-card b { font-size: 11px; }
+  .float-top { top: 62px; }
+  .float-bottom { bottom: 45px; }
+  .trust-strip .shell { justify-content: center; font-size: 9px; letter-spacing: .8px; }
+  .trust-strip .shell span:nth-of-type(n+3) { display: none; }
+
+  .showcase { padding: 78px 0 92px; }
+  .section-title h2, .story h2, .community h2, .privacy-panel h2, .download h2 { letter-spacing: -2px; }
+  .screens-track { scrollbar-width: none; }
+  .screens-track::-webkit-scrollbar { display: none; }
+  .shot { min-width: 78vw; }
+  .shot figcaption { padding-top: 12px; }
+
+  .story { min-height: 0; margin-bottom: 18px; padding: 32px 20px; }
+  .story-copy p, .community-copy p { font-size: 16px; }
+  .story-media { width: 100%; height: 430px; }
+  .story-media img { max-width: 100%; object-fit: contain; }
+  .sharing-story { margin: 12px 12px 88px; padding: 34px 20px; gap: 24px; border-radius: 28px; }
+  .sharing-copy { order: 1; }
+  .sharing-visual { order: 2; min-height: 350px; }
+  .sharing-visual img:first-child { left: -22%; }
+  .sharing-visual img:last-child { right: -23%; height: 315px; }
+  .sharing-copy h2 { font-size: 38px; }
+
+  .community { gap: 25px; padding: 65px 0 85px; }
+  .community-gallery { height: 430px; overflow: hidden; }
+  .community-gallery img { height: 385px; }
+  .gallery-a { left: -28px; }
+  .gallery-b { right: -28px; }
+  .privacy-panel { margin-bottom: 80px; padding: 30px 20px; border-radius: 26px; }
+  .privacy-links { min-width: 0; }
+
+  .contact { padding-top: 78px; padding-bottom: 78px; }
+  .contact-heading h2 { font-size: 40px; }
+  .support-launch { padding: 27px 20px; border-radius: 24px; }
+  .support-launch h3 { font-size: 26px; }
+  .support-center-link { min-height: 50px; }
+  .mail-card { border-radius: 24px; }
+
+  .download { min-height: 0; margin-bottom: 80px; }
+  .download-art { min-height: 300px; }
+  .download-art img { width: 250px; bottom: -30px; }
+  .rings { width: 270px; height: 270px; }
+  .download-copy { padding: 32px 20px 42px; }
+  .download-copy h2 { font-size: 39px; }
+  .testflight-button { max-width: 100%; }
+
+  .footer { gap: 18px; padding-bottom: 34px; }
+  .footer-links { gap: 12px 18px; }
+
+  .legal { padding: 45px 0 75px; }
+  .legal-title { margin-bottom: 28px; }
+  .legal-title h1 { font-size: 43px; letter-spacing: -2px; overflow-wrap: anywhere; }
+  .legal-card { padding: 26px 20px; border-radius: 24px; }
+  .legal-card > p:first-child { font-size: 16px; }
+  .legal-card h2 { margin-top: 34px; font-size: 20px; }
+  .legal-card ul { padding-left: 20px; }
+  .eula-note, .contact-box { padding: 18px; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 380px) {
+  .nav-cta { font-size: 10px; }
+  .hero h1 { font-size: 42px; }
+  .screen-back { right: -52px; }
+  .float-card { display: none; }
+  .sharing-copy h2, .contact-heading h2, .download-copy h2 { font-size: 35px; }
+}

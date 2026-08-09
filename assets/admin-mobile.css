@@ -1,0 +1,42 @@
+@media (max-width: 900px) {
+  body { overflow-x: hidden; }
+  .sidebar { padding: 14px 16px; gap: 12px; }
+  .sidebar .admin-brand span { display: none; }
+  .admin-user strong { max-width: 120px; }
+  .workspace { padding: 28px 14px 50px; }
+  .workspace header { align-items: center; gap: 14px; }
+  .workspace h1 { font-size: 34px; }
+  #refresh { min-height: 44px; white-space: nowrap; }
+  .stats { margin: 24px 0; gap: 9px; }
+  .stats article { padding: 16px; }
+  .stats strong { font-size: 25px; }
+  .filters { padding-bottom: 4px; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button { min-height: 42px; white-space: nowrap; }
+  #ticket-search { min-height: 46px; }
+  .support-workbench { gap: 12px; }
+  .ticket-detail { min-height: 500px; }
+}
+
+@media (max-width: 600px) {
+  .login-card { width: calc(100% - 20px); margin-top: 3vh; padding: 26px 20px; border-radius: 23px; }
+  .login-card h1 { font-size: 32px; }
+  .sidebar { position: static; }
+  .admin-user small { display: none; }
+  .admin-user strong { max-width: 105px; }
+  .workspace header { display: grid; }
+  .workspace h1 { margin-top: 4px; font-size: 31px; }
+  #refresh { justify-self: start; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .toolbar { gap: 10px; }
+  .ticket { padding: 15px; }
+  .detail-header { padding: 17px; align-items: flex-start; }
+  .detail-header h2 { font-size: 20px; }
+  .detail-header select { max-width: 120px; }
+  .detail-meta { padding: 14px 17px; }
+  .detail-meta button { justify-self: start; min-height: 40px; }
+  .admin-messages { height: 330px; padding: 15px; }
+  .admin-message { max-width: 90%; }
+  .admin-reply { padding: 12px; }
+  .admin-reply textarea, .admin-reply button { min-height: 48px; }
+}
