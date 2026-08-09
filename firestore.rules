@@ -25,6 +25,206 @@ service cloud.firestore {
       return value in ['new', 'in_progress', 'resolved'];
     }
 
+    function isPostOwner(postId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/ForumPaylasimlari/$(postId)).data.paylasanKullaniciID == request.auth.uid;
+    }
+
+    function validPostCounterUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'begeniSayisi', 'yorumSayisi', 'kaydetmeSayisi'
+        ])
+        && request.resource.data.begeniSayisi is int
+        && request.resource.data.yorumSayisi is int
+        && request.resource.data.kaydetmeSayisi is int
+        && request.resource.data.begeniSayisi >= 0
+        && request.resource.data.yorumSayisi >= 0
+        && request.resource.data.kaydetmeSayisi >= 0
+        && request.resource.data.begeniSayisi >= resource.data.begeniSayisi - 1
+        && request.resource.data.begeniSayisi <= resource.data.begeniSayisi + 1
+        && request.resource.data.yorumSayisi >= resource.data.yorumSayisi - 1
+        && request.resource.data.yorumSayisi <= resource.data.yorumSayisi + 1
+        && request.resource.data.kaydetmeSayisi >= resource.data.kaydetmeSayisi - 1
+        && request.resource.data.kaydetmeSayisi <= resource.data.kaydetmeSayisi + 1;
+    }
+
+    function validCommentCounterUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['begeniSayisi'])
+        && request.resource.data.begeniSayisi is int
+        && request.resource.data.begeniSayisi >= 0
+        && request.resource.data.begeniSayisi >= resource.data.begeniSayisi - 1
+        && request.resource.data.begeniSayisi <= resource.data.begeniSayisi + 1;
+    }
+
+    // Pandi iOS oturum akisi Firebase Authentication sonrasinda bu belgeyi
+    // okur. Destek merkezi kurallari eklenirken bu eslesme kaybolursa dogru
+    // sifreyle giris yapilsa bile uygulama "insufficient permissions" verir.
+    match /kullanicilar/{userId} {
+      allow get: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.kimlik == request.auth.uid
+        && !request.resource.data.keys().hasAny(['adminMi', 'rol']);
+
+      allow update: if isAdmin()
+        || signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.kimlik == resource.data.kimlik
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+          'adminMi', 'rol', 'rolGuncellenmeTarihi', 'roluGuncelleyenKullaniciID'
+        ]);
+
+      allow delete: if false;
+
+      // Notlar, belirtiler, rozetler, cihaz tokenlari ve engellenenler gibi
+      // kullaniciya ait alt koleksiyonlar yalnizca hesap sahibi tarafindan
+      // erisilebilir. Yonetici destek/denetim amaciyla okuyabilir.
+      match /{subCollection}/{documentId} {
+        allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+        allow create, update, delete: if signedIn() && request.auth.uid == userId;
+      }
+    }
+
+    // Pandi Forum: oturum acmis kullanicilar icerigi okuyabilir; kimlik,
+    // sahiplik ve sayac guncellemeleri sunucu kurallariyla sinirlanir.
+    match /ForumPaylasimlari/{postId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.resource.data.paylasimID == postId
+        && request.resource.data.paylasanKullaniciID == request.auth.uid
+        && request.resource.data.baslik is string
+        && request.resource.data.baslik.size() >= 1
+        && request.resource.data.baslik.size() <= 160
+        && request.resource.data.mesaj is string
+        && request.resource.data.mesaj.size() >= 1
+        && request.resource.data.mesaj.size() <= 5000
+        && request.resource.data.begeniSayisi == 0
+        && request.resource.data.yorumSayisi == 0
+        && request.resource.data.kaydetmeSayisi == 0;
+
+      allow update: if isAdmin() || (signedIn() && validPostCounterUpdate());
+      allow delete: if isAdmin() || resource.data.paylasanKullaniciID == request.auth.uid;
+
+      match /begeniler/{userId} {
+        allow read: if signedIn()
+          && (userId == request.auth.uid || isPostOwner(postId) || isAdmin());
+        allow create: if signedIn()
+          && userId == request.auth.uid
+          && request.resource.data.kullaniciID == request.auth.uid;
+        allow delete: if signedIn()
+          && (userId == request.auth.uid || isPostOwner(postId) || isAdmin());
+        allow update: if false;
+      }
+
+      match /kaydedenler/{userId} {
+        allow read: if signedIn()
+          && (userId == request.auth.uid || isPostOwner(postId) || isAdmin());
+        allow create: if signedIn()
+          && userId == request.auth.uid
+          && request.resource.data.kullaniciID == request.auth.uid;
+        allow delete: if signedIn()
+          && (userId == request.auth.uid || isPostOwner(postId) || isAdmin());
+        allow update: if false;
+      }
+
+      match /yorumlar/{commentId} {
+        allow read: if signedIn();
+
+        allow create: if signedIn()
+          && request.resource.data.yorumID == commentId
+          && request.resource.data.yorumcuKullaniciID == request.auth.uid
+          && request.resource.data.mesaj is string
+          && request.resource.data.mesaj.size() >= 1
+          && request.resource.data.mesaj.size() <= 3000
+          && request.resource.data.begeniSayisi == 0;
+
+        allow update: if isAdmin() || (signedIn() && validCommentCounterUpdate());
+        allow delete: if signedIn()
+          && (resource.data.yorumcuKullaniciID == request.auth.uid
+            || isPostOwner(postId)
+            || isAdmin());
+
+        match /begeniler/{userId} {
+          allow read: if signedIn()
+            && (userId == request.auth.uid || isPostOwner(postId) || isAdmin());
+          allow create: if signedIn()
+            && userId == request.auth.uid
+            && request.resource.data.kullaniciID == request.auth.uid;
+          allow delete: if signedIn()
+            && (userId == request.auth.uid || isPostOwner(postId) || isAdmin());
+          allow update: if false;
+        }
+      }
+    }
+
+    // Pandi Kulup icerikleri tum oturum acmis uyelere gorunur. Icerik
+    // yonetimi yalnizca yoneticiye, yorum olusturma ise yorum sahibine aittir.
+    match /PandiKulupIcerikleri/{contentId} {
+      allow read: if signedIn();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['yorumSayisi'])
+        && request.resource.data.yorumSayisi is int
+        && request.resource.data.yorumSayisi == resource.data.yorumSayisi + 1;
+
+      match /yorumlar/{commentId} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.yorumId == commentId
+          && request.resource.data.gonderiId == contentId
+          && request.resource.data.kullaniciId == request.auth.uid
+          && request.resource.data.metin is string
+          && request.resource.data.metin.size() >= 1
+          && request.resource.data.metin.size() <= 3000
+          && request.resource.data.begeniSayisi == 0;
+        allow update: if isAdmin();
+        allow delete: if isAdmin()
+          || signedIn() && resource.data.kullaniciId == request.auth.uid;
+      }
+    }
+
+    // Bildirimler kullanici bazinda sorgulanir. Alici yalnizca kendi
+    // bildirimlerini okuyabilir, okundu durumunu degistirebilir ve silebilir.
+    match /Bildirimler/{notificationId} {
+      allow read: if isAdmin()
+        || signedIn() && resource.data.kullaniciID == request.auth.uid;
+
+      allow create: if isAdmin()
+        || signedIn()
+        && request.resource.data.kullaniciID == request.auth.uid
+        && request.resource.data.bildirimID == notificationId
+        || signedIn()
+        && request.resource.data.etkilesimKullaniciID == request.auth.uid
+        && request.resource.data.bildirimID == notificationId
+        && request.resource.data.kullaniciID != request.auth.uid;
+
+      allow update: if isAdmin()
+        || signedIn()
+        && resource.data.kullaniciID == request.auth.uid
+        && request.resource.data.kullaniciID == resource.data.kullaniciID
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'okundu', 'okunmaTarihi'
+        ])
+        && request.resource.data.okundu is bool;
+
+      allow delete: if isAdmin()
+        || signedIn() && resource.data.kullaniciID == request.auth.uid;
+    }
+
+    // Topluluk sikayetleri kullanici tarafindan olusturulur; tum listeyi ve
+    // moderasyon durumunu yalnizca yonetici gorebilir ve degistirebilir.
+    match /Sikayetler/{reportId} {
+      allow create: if signedIn()
+        && request.resource.data.bildirenKullaniciID == request.auth.uid;
+      allow read: if isAdmin()
+        || signedIn() && resource.data.bildirenKullaniciID == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
     match /DestekTalepleri/{requestId} {
       allow create: if signedIn()
         && request.resource.data.keys().hasOnly([

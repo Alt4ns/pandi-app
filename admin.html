@@ -2,40 +2,117 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
-  <title>Pandi Destek — Yönetim</title>
+  <meta name="theme-color" content="#1b1018">
+  <title>Pandi — Yönetim Merkezi</title>
   <link rel="icon" href="assets/app-icon.png">
   <link rel="stylesheet" href="assets/admin.css">
   <link rel="stylesheet" href="assets/admin-v2.css">
-  <link rel="stylesheet" href="assets/admin-mobile.css?v=mobile-1">
+  <link rel="stylesheet" href="assets/admin-dashboard.css?v=1">
 </head>
 <body>
   <main>
     <section id="admin-login" class="login-card">
-      <a class="admin-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi Destek</span></a>
-      <span class="kicker">YÖNETİCİ PANELİ</span>
-      <h1>Destek taleplerini<br>tek yerden yönet.</h1>
-      <p>Bu ekran yalnızca doğrulanmış Pandi yönetici hesabına açıktır.</p>
-      <div class="provider-buttons"><button id="admin-google"><img class="auth-logo google-logo" src="assets/google-logo.png" alt="" aria-hidden="true">Google ile giriş</button><button id="admin-apple" class="apple"><img class="auth-logo apple-logo" src="assets/apple-logo.svg" alt="" aria-hidden="true">Apple ile giriş</button></div>
+      <a class="admin-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi</span></a>
+      <span class="kicker">GÜVENLİ YÖNETİCİ GİRİŞİ</span>
+      <h1>Topluluğun nabzı<br>tek ekranda.</h1>
+      <p>Bu alan yalnızca doğrulanmış Pandi yönetici hesabına açıktır.</p>
+      <div class="provider-buttons"><button id="admin-google"><img class="auth-logo google-logo" src="assets/google-logo.png" alt="">Google ile giriş</button><button id="admin-apple" class="apple"><img class="auth-logo apple-logo" src="assets/apple-logo.svg" alt="">Apple ile giriş</button></div>
       <div class="divider"><span>veya</span></div>
       <label>E-posta<input id="admin-email" type="email" autocomplete="email" value="alt4ns@icloud.com"></label>
       <label>Şifre<input id="admin-password" type="password" autocomplete="current-password" placeholder="Şifren"></label>
-      <button id="admin-email-login" class="primary">Yönetim paneline giriş yap</button>
+      <button id="admin-email-login" class="primary">Yönetim merkezine giriş yap</button>
       <p id="login-status" class="status" role="status"></p>
       <a class="back" href="index.html">← Pandi ana sayfasına dön</a>
     </section>
 
     <section id="admin-app" class="admin-app" hidden>
-      <aside class="sidebar"><a class="admin-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi</span></a><nav><button class="active">◫ <span>Destek talepleri</span></button></nav><div class="admin-user"><span id="admin-avatar">A</span><div><small>YÖNETİCİ</small><strong id="admin-user-email"></strong></div><button id="admin-logout" title="Çıkış yap">↗</button></div></aside>
+      <aside class="sidebar">
+        <a class="admin-brand" href="index.html"><img src="assets/app-icon.png" alt=""><span>Pandi</span><small>YÖNETİM</small></a>
+        <nav aria-label="Yönetim bölümleri">
+          <button class="active" data-view="dashboard"><b>⌂</b><span>Genel bakış</span></button>
+          <button data-view="users"><b>♙</b><span>Kullanıcılar</span><em id="nav-users">0</em></button>
+          <button data-view="notifications"><b>◉</b><span>Bildirim merkezi</span></button>
+          <button data-view="content"><b>▧</b><span>Kulüp içerikleri</span><em id="nav-content">0</em></button>
+          <button data-view="moderation"><b>!</b><span>Şikâyetler</span><em id="nav-reports">0</em></button>
+          <button data-view="support"><b>◫</b><span>Destek talepleri</span><em id="nav-tickets">0</em></button>
+        </nav>
+        <div class="admin-user"><span id="admin-avatar">A</span><div><small>YÖNETİCİ</small><strong id="admin-user-email"></strong></div><button id="admin-logout" title="Çıkış yap">↗</button></div>
+      </aside>
+
       <div class="workspace">
-        <header><div><span class="kicker">PANDİ DESTEK</span><h1>Destek talepleri</h1><p>Siteden oluşturulan talepleri incele ve durumlarını yönet.</p></div><button id="refresh">↻ Yenile</button></header>
-        <div class="stats"><article><small>TOPLAM</small><strong id="stat-total">0</strong></article><article><small>YENİ</small><strong id="stat-new">0</strong></article><article><small>İNCELENİYOR</small><strong id="stat-progress">0</strong></article><article><small>ÇÖZÜLDÜ</small><strong id="stat-done">0</strong></article></div>
-        <div class="toolbar"><div class="filters"><button class="active" data-filter="all">Tümü</button><button data-filter="new">Yeni</button><button data-filter="in_progress">İnceleniyor</button><button data-filter="resolved">Çözüldü</button></div><input id="ticket-search" type="search" placeholder="Talep, e-posta veya takip no ara…"></div>
-        <div class="support-workbench"><div id="ticket-list" class="ticket-list"><div class="empty">Talepler yükleniyor…</div></div><section id="ticket-detail" class="ticket-detail"><div class="detail-empty"><span>♡</span><strong>Bir destek talebi seç</strong><p>Konuşma ve yanıt alanı burada açılır.</p></div></section></div>
+        <div class="topbar"><button id="mobile-menu" aria-label="Menüyü aç">☰</button><div><small>PANDİ YÖNETİM MERKEZİ</small><strong id="topbar-title">Genel bakış</strong></div><button id="refresh" title="Verileri yenile">↻</button></div>
+
+        <section class="admin-view active" data-panel="dashboard">
+          <div class="admin-hero"><div><span>PANDİ YÖNETİM</span><h1>Topluluğun nabzı<br>tek ekranda.</h1><p>Kullanıcıları izle, içerikleri yönet ve doğru kişiye doğru anda ulaş.</p></div><img src="assets/pandi-wave.png" alt="Pandi kırmızı panda"></div>
+          <div class="metric-grid">
+            <article><i class="purple">♙</i><strong id="dash-users">0</strong><span>Toplam kullanıcı</span></article>
+            <article><i class="green">↗</i><strong id="dash-new-users">0</strong><span>Son 7 gün</span></article>
+            <article><i class="orange">▧</i><strong id="dash-content">0</strong><span>Aktif içerik</span></article>
+            <article><i class="blue">✓</i><strong id="dash-admins">0</strong><span>Yönetici</span></article>
+            <article><i class="amber">!</i><strong id="dash-reports">0</strong><span>Açık şikâyet</span></article>
+            <article><i class="cyan">◫</i><strong id="dash-tickets">0</strong><span>Bekleyen destek</span></article>
+          </div>
+          <div class="today-card"><div><small>BUGÜNÜN ÖZETİ</small><strong id="today-summary">Veriler hazırlanıyor…</strong></div><span id="system-health">● Firebase bağlı</span></div>
+          <div class="dashboard-columns">
+            <section class="panel-card"><div class="section-title"><div><small>HIZLI ERİŞİM</small><h2>Yönetim araçları</h2></div></div><div class="tool-list">
+              <button data-jump="users"><i class="purple">♙</i><span><b>Kullanıcı yönetimi</b><small>Hesapları görüntüle, ara ve rol ata</small></span><em>›</em></button>
+              <button data-jump="notifications"><i class="orange">◉</i><span><b>Bildirim merkezi</b><small>Kişisel veya toplu duyuru gönder</small></span><em>›</em></button>
+              <button data-jump="content"><i class="amber">▧</i><span><b>Kulüp içerikleri</b><small>Kartları ve detay metinlerini yönet</small></span><em>›</em></button>
+              <button data-jump="moderation"><i class="red">!</i><span><b>Şikâyetler</b><small>Topluluk bildirimlerini incele</small></span><em>›</em></button>
+              <button data-jump="support"><i class="cyan">◫</i><span><b>Destek talepleri</b><small>Kullanıcılarla güvenli biçimde mesajlaş</small></span><em>›</em></button>
+            </div></section>
+            <section class="panel-card"><div class="section-title"><div><small>SON KAYITLAR</small><h2>Yeni kullanıcılar</h2></div><button data-jump="users">Tümünü gör</button></div><div id="recent-users" class="compact-list"><div class="empty">Yükleniyor…</div></div></section>
+          </div>
+        </section>
+
+        <section class="admin-view" data-panel="users">
+          <header class="page-head"><div><span class="kicker">HESAPLAR VE YETKİLER</span><h1>Kullanıcı yönetimi</h1><p>Kayıtlı hesapları incele, kullanıcı kimliğini kopyala ve rolünü güvenle güncelle.</p></div></header>
+          <div class="metric-grid compact"><article><strong id="user-total">0</strong><span>Toplam</span></article><article><strong id="user-week">0</strong><span>Son 7 gün</span></article><article><strong id="user-admins">0</strong><span>Yönetici</span></article><article><strong id="user-moderators">0</strong><span>Moderatör</span></article></div>
+          <div class="module-toolbar"><input id="user-search" type="search" placeholder="Ad, e-posta veya UID ara…"><select id="user-role-filter"><option value="all">Tüm roller</option><option value="kullanici">Kullanıcı</option><option value="moderator">Moderatör</option><option value="admin">Admin</option></select></div>
+          <div class="split-layout"><div id="user-list" class="data-list"><div class="empty">Kullanıcılar yükleniyor…</div></div><section id="user-detail" class="detail-panel"><div class="detail-empty"><span>♙</span><strong>Bir kullanıcı seç</strong><p>Hesap ve rol ayrıntıları burada açılır.</p></div></section></div>
+        </section>
+
+        <section class="admin-view" data-panel="notifications">
+          <header class="page-head"><div><span class="kicker">DOĞRU ANDA ULAŞ</span><h1>Bildirim merkezi</h1><p>Tüm kullanıcılara veya seçtiğin hesaba kişiselleştirilmiş uygulama içi bildirim gönder.</p></div></header>
+          <div class="compose-layout">
+            <form id="notification-form" class="panel-card form-card">
+              <div class="section-title"><div><small>YENİ BİLDİRİM</small><h2>Mesaj oluştur</h2></div><span class="live-pill">CANLI</span></div>
+              <label>Hedef<select name="target"><option value="all">Tüm kullanıcılar</option><option value="single">Tek kullanıcı</option></select></label>
+              <label id="notification-user-wrap" hidden>Kullanıcı<select name="userId" id="notification-user"></select></label>
+              <div class="form-row"><label>Tür<select name="type"><option value="genel">Genel</option><option value="kulup">Kulüp</option><option value="premium">Premium</option><option value="sistem">Sistem</option></select></label><label>Öncelik<select name="priority"><option value="normal">Normal</option><option value="yuksek">Yüksek</option></select></label></div>
+              <label>Başlık<input name="title" maxlength="90" required placeholder="Örn. Pandi’de yeni bir özellik var"></label>
+              <label>Mesaj<textarea name="message" maxlength="800" required placeholder="{ad} yazarak kullanıcı adını kişiselleştirebilirsin."></textarea></label>
+              <label>Aksiyon bağlantısı <span>(isteğe bağlı)</span><input name="action" maxlength="300" placeholder="pandi://forum veya https://…"></label>
+              <button class="primary" type="submit">Bildirimleri gönder ↑</button><p id="notification-status" class="status"></p>
+            </form>
+            <section class="panel-card"><div class="section-title"><div><small>SON GÖNDERİMLER</small><h2>Bildirim akışı</h2></div></div><div id="notification-list" class="compact-list"><div class="empty">Yükleniyor…</div></div></section>
+          </div>
+        </section>
+
+        <section class="admin-view" data-panel="content">
+          <header class="page-head"><div><span class="kicker">PANDİ KULÜP</span><h1>İçerik yönetimi</h1><p>Kulüp kartlarını yayına al, sıralamasını ve açıklamalarını düzenle.</p></div><button id="new-content" class="accent-button">+ Yeni içerik</button></header>
+          <div class="split-layout content-layout"><div id="content-list" class="data-list"><div class="empty">İçerikler yükleniyor…</div></div><section id="content-editor" class="detail-panel"><div class="detail-empty"><span>▧</span><strong>Bir içerik seç</strong><p>Düzenleme formu burada açılır.</p></div></section></div>
+        </section>
+
+        <section class="admin-view" data-panel="moderation">
+          <header class="page-head"><div><span class="kicker">TOPLULUK GÜVENLİĞİ</span><h1>Şikâyetler</h1><p>Forum paylaşımı ve yorum bildirimlerini tek yerden incele.</p></div></header>
+          <div class="metric-grid compact"><article><strong id="report-total">0</strong><span>Toplam</span></article><article><strong id="report-open">0</strong><span>Açık</span></article><article><strong id="report-closed">0</strong><span>Kapalı</span></article></div>
+          <div class="module-toolbar"><div class="filters report-filters"><button class="active" data-report-filter="all">Tümü</button><button data-report-filter="acik">Açık</button><button data-report-filter="kapali">Kapalı</button></div><input id="report-search" type="search" placeholder="Kullanıcı veya paylaşım ara…"></div>
+          <div id="report-list" class="report-grid"><div class="empty">Şikâyetler yükleniyor…</div></div>
+        </section>
+
+        <section class="admin-view" data-panel="support">
+          <header class="page-head"><div><span class="kicker">PANDİ DESTEK</span><h1>Destek talepleri</h1><p>Siteden oluşturulan talepleri incele, konuşmayı sürdür ve durumunu yönet.</p></div></header>
+          <div class="stats"><article><small>TOPLAM</small><strong id="stat-total">0</strong></article><article><small>YENİ</small><strong id="stat-new">0</strong></article><article><small>İNCELENİYOR</small><strong id="stat-progress">0</strong></article><article><small>ÇÖZÜLDÜ</small><strong id="stat-done">0</strong></article></div>
+          <div class="toolbar"><div class="filters"><button class="active" data-filter="all">Tümü</button><button data-filter="new">Yeni</button><button data-filter="in_progress">İnceleniyor</button><button data-filter="resolved">Çözüldü</button></div><input id="ticket-search" type="search" placeholder="Talep, e-posta veya takip no ara…"></div>
+          <div class="support-workbench"><div id="ticket-list" class="ticket-list"><div class="empty">Talepler yükleniyor…</div></div><section id="ticket-detail" class="ticket-detail"><div class="detail-empty"><span>♡</span><strong>Bir destek talebi seç</strong><p>Konuşma ve yanıt alanı burada açılır.</p></div></section></div>
+        </section>
       </div>
     </section>
   </main>
-  <script type="module" src="assets/admin.js"></script>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="assets/admin.js?v=dashboard-1"></script>
 </body>
 </html>
